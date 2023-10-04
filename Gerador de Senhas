@@ -1,0 +1,67 @@
+import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class GeradorSenha {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Digite o comprimento desejado da senha: ");
+        int comprimentoSenha = scanner.nextInt();
+        scanner.nextLine(); // Limpa o buffer do teclado
+
+        System.out.print("Incluir letras maiúsculas (S/N)? ");
+        boolean incluirMaiusculas = scanner.nextLine().equalsIgnoreCase("S");
+
+        System.out.print("Incluir letras minúsculas (S/N)? ");
+        boolean incluirMinusculas = scanner.nextLine().equalsIgnoreCase("S");
+
+        System.out.print("Incluir números (S/N)? ");
+        boolean incluirNumeros = scanner.nextLine().equalsIgnoreCase("S");
+
+        System.out.print("Incluir caracteres especiais (S/N)? ");
+        boolean incluirEspeciais = scanner.nextLine().equalsIgnoreCase("S");
+
+        String senha = gerarSenha(comprimentoSenha, incluirMaiusculas, incluirMinusculas, incluirNumeros, incluirEspeciais);
+
+        System.out.println("Senha gerada: " + senha);
+    }
+
+    public static String gerarSenha(int comprimento, boolean incluirMaiusculas, boolean incluirMinusculas, boolean incluirNumeros, boolean incluirEspeciais) {
+        String maiusculas = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String minusculas = "abcdefghijklmnopqrstuvwxyz";
+        String numeros = "0123456789";
+        String especiais = "!@#$%^&*()-_+=<>?";
+
+        StringBuilder caracteres = new StringBuilder();
+        SecureRandom random = new SecureRandom();
+
+        if (incluirMaiusculas) {
+            caracteres.append(maiusculas);
+        }
+        if (incluirMinusculas) {
+            caracteres.append(minusculas);
+        }
+        if (incluirNumeros) {
+            caracteres.append(numeros);
+        }
+        if (incluirEspeciais) {
+            caracteres.append(especiais);
+        }
+
+        if (caracteres.length() == 0) {
+            System.out.println("Erro: Nenhuma opção selecionada para a senha.");
+            System.exit(1);
+        }
+
+        StringBuilder senha = new StringBuilder();
+        for (int i = 0; i < comprimento; i++) {
+            int index = random.nextInt(caracteres.length());
+            senha.append(caracteres.charAt(index));
+        }
+
+        return senha.toString();
+    }
+}
